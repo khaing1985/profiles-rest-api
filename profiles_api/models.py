@@ -3,15 +3,16 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
+
 class UserProfileManger(BaseUserManager):
     """Manager for user profiles"""
-    def create_user(self, email, name, Password=None):
+    def create_user(self, email, name, password = None):
         """Create a new user profile"""
         if not email:
             raise ValueError('Users must have an email address')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name,)
+        user = self.model(email = email, name = name)
 
         user.set_password(password)
         user.save(using=self._db)
@@ -28,12 +29,13 @@ class UserProfileManger(BaseUserManager):
 
         return user
 
+
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database Model from User in the System """
-    email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    email = models.EmailField(max_length = 255, unique = True)
+    name = models.CharField(max_length = 255)
+    is_active = models.BooleanField(default = True)
+    is_staff = models.BooleanField(default = False)
 
     objects = UserProfileManger()
 
